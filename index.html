@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Loop Tracker - Build Better Habits</title>
+    <meta name="description" content="Personal Habit Loop Tracker with visual cue-routine-reward circles and streak tracking">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <div class="logo-icon">🔥</div>
+                        <div class="logo-text">
+                            <h1>Habit Loop Tracker</h1>
+                            <p>Build better habits, one loop at a time</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="completed-today">0/0</div>
+                            <div class="stat-label">Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="completion-rate">0%</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="add-habit-btn">Add Habit</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Habit Rings Section -->
+            <section class="section">
+                <div class="glass-card">
+                    <h2 class="section-title">Habit Loop Rings</h2>
+                    <div class="habit-rings" id="habit-rings">
+                        <!-- Habit rings will be dynamically generated -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Streak and Mood Section -->
+            <div class="two-column">
+                <section class="section">
+                    <div class="glass-card text-center">
+                        <h3 class="card-title">Streak Flame</h3>
+                        <div class="streak-flame" id="streak-flame">
+                            <div class="flame">🔥</div>
+                            <div class="streak-number" id="streak-number">0</div>
+                        </div>
+                        <p class="streak-text">Total Streak: <span id="total-streak">0</span> days</p>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="glass-card">
+                        <h3 class="card-title">Mood Booster</h3>
+                        <div class="mood-selector" id="mood-selector">
+                            <div class="mood-grid">
+                                <button class="mood-btn" data-mood="happy">
+                                    <div class="mood-emoji">😊</div>
+                                    <div class="mood-label">Happy</div>
+                                </button>
+                                <button class="mood-btn" data-mood="sad">
+                                    <div class="mood-emoji">😢</div>
+                                    <div class="mood-label">Sad</div>
+                                </button>
+                                <button class="mood-btn" data-mood="energetic">
+                                    <div class="mood-emoji">⚡</div>
+                                    <div class="mood-label">Energetic</div>
+                                </button>
+                                <button class="mood-btn" data-mood="tired">
+                                    <div class="mood-emoji">😴</div>
+                                    <div class="mood-label">Tired</div>
+                                </button>
+                                <button class="mood-btn active" data-mood="neutral">
+                                    <div class="mood-emoji">😐</div>
+                                    <div class="mood-label">Neutral</div>
+                                </button>
+                            </div>
+                            <div class="mood-current">
+                                Current mood: <span id="current-mood">neutral</span>
+                            </div>
+                            <div class="mood-suggestions" id="mood-suggestions">
+                                <!-- Suggestions will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Time Slider Section -->
+            <section class="section">
+                <div class="glass-card">
+                    <h3 class="card-title">Time Travel</h3>
+                    <div class="time-slider-container">
+                        <div class="selected-date" id="selected-date">Today</div>
+                        <div class="date-completion" id="date-completion">0/0 habits completed</div>
+                        <div class="slider-wrapper">
+                            <input type="range" class="time-slider" id="time-slider" min="0" max="30" value="30">
+                            <div class="slider-labels">
+                                <span>30 days ago</span>
+                                <span>Today</span>
+                            </div>
+                        </div>
+                        <div class="progress-list" id="progress-list">
+                            <!-- Progress items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Badge System Section -->
+            <section class="section">
+                <div class="glass-card">
+                    <h3 class="card-title">Achievement Badges</h3>
+                    <div class="badge-system" id="badge-system">
+                        <div class="badge-progress">
+                            <div class="badge-stats">
+                                <span id="unlocked-count">0</span>/6 Badges Unlocked
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="badge-progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="badge-grid" id="badge-grid">
+                            <!-- Badges will be populated by JavaScript -->
+                        </div>
+                        <div class="next-badge" id="next-badge">
+                            <!-- Next badge hint will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Add Habit Modal -->
+    <div class="modal" id="habit-modal">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="glass-card">
+                <h3 class="modal-title">Create New Habit</h3>
+                <form id="habit-form">
+                    <div class="form-group">
+                        <label for="habit-name">Habit Name</label>
+                        <input type="text" id="habit-name" placeholder="e.g., Morning Meditation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="habit-cue">Cue (When/Where)</label>
+                        <input type="text" id="habit-cue" placeholder="e.g., After I wake up" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="habit-routine">Routine (What)</label>
+                        <input type="text" id="habit-routine" placeholder="e.g., Meditate for 10 minutes" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="habit-reward">Reward (Why)</label>
+                        <input type="text" id="habit-reward" placeholder="e.g., Feel calm and centered" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Color Theme</label>
+                        <div class="color-picker" id="color-picker">
+                            <button type="button" class="color-btn active" data-color="#8b5cf6"></button>
+                            <button type="button" class="color-btn" data-color="#06b6d4"></button>
+                            <button type="button" class="color-btn" data-color="#10b981"></button>
+                            <button type="button" class="color-btn" data-color="#f59e0b"></button>
+                            <button type="button" class="color-btn" data-color="#ef4444"></button>
+                            <button type="button" class="color-btn" data-color="#ec4899"></button>
+                            <button type="button" class="color-btn" data-color="#6366f1"></button>
+                            <button type="button" class="color-btn" data-color="#84cc16"></button>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Habit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
